@@ -172,7 +172,7 @@ public class Application extends Controller {
     private static boolean insert(Connection connection, JsonNode item) {
         Logger.debug("inserting node {}", item);
         try {
-            String sql = "INSERT INTO expenses (date, place, payment, reference, amount, source) VALUES (?,?,?,?,?,?)";
+            String sql = "INSERT INTO expenses (date, place, payment, reference, amount, source, status) VALUES (?,?,?,?,?,?,?)";
             final PreparedStatement stm = connection.prepareStatement(sql);
 
             long millis = getMillis(item.path("date").asText());
@@ -182,6 +182,7 @@ public class Application extends Controller {
             stm.setString(4, item.path("reference").asText());
             stm.setString(5, item.path("amount").asText());
             stm.setString(6, item.path("source").asText());
+            stm.setString(7, item.path("status").asText());
             stm.execute();
 
             return true;
@@ -194,7 +195,7 @@ public class Application extends Controller {
     private static boolean update(Connection connection, long itemId, JsonNode item) {
         Logger.debug("updating node {}", item);
         try {
-            String sql = "UPDATE expenses SET date=?, place=?, payment=?, reference=?, amount=?, source=? WHERE id=?";
+            String sql = "UPDATE expenses SET date=?, place=?, payment=?, reference=?, amount=?, source=?, status=? WHERE id=?";
             final PreparedStatement stm = connection.prepareStatement(sql);
 
             long millis = getMillis(item.path("date").asText());
@@ -204,7 +205,8 @@ public class Application extends Controller {
             stm.setString(4, item.path("reference").asText());
             stm.setString(5, item.path("amount").asText());
             stm.setString(6, item.path("source").asText());
-            stm.setLong(7, itemId);
+            stm.setString(7, item.path("status").asText());
+            stm.setLong(8, itemId);
             stm.execute();
 
             return true;
