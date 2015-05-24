@@ -268,6 +268,7 @@ public class Application extends Controller {
         node.put("reference", query.getString("reference"));
         node.put("amount", query.getString("amount"));
         node.put("source", query.getString("source"));
+        node.put("status", query.getString("status"));
         return node;
     }
 }
